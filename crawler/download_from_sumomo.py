@@ -17,8 +17,8 @@ def download(lists, name):
     if not os.path.exists(os.path.join(dir_name, name)):
         os.mkdir(os.path.join(dir_name, name))
 
-    for url in tqdm(lists):
-        path = os.path.join(dir_name, name, url.split('/')[-1])
+    for i, url in tqdm(enumerate(lists)):
+        path = os.path.join(dir_name, name, str(i) + '.jpg')
         time.sleep(1)
         r = requests.get(url)
 
