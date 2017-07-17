@@ -1,2 +1,3 @@
-INPUT_DIR = "../Images/original/"
-OUTPUT_DIR = "../Images/faces/"
+INPUT_DIR = "../Images/origina/"
+OUTPUT_DIR = "../Images/faces"
+HOME_DIR = ".."
