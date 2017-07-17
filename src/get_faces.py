@@ -12,15 +12,17 @@ detector = dlib.get_frontal_face_detector()
 dir_list = os.listdir(INPUT_DIR)
 
 # get the list of images for each dir
-for dir_name in tqdm(dir_list);
+for dir_name in tqdm(dir_list):
     if not os.path.exists(os.path.join(OUTPUT_DIR, dir_name)):
         os.mkdir(os.path.join(OUTPUT_DIR, dir_name))
     image_files = glob.glob(os.path.join(INPUT_DIR, dir_name, "*.jpg"))
 
     # detect faces on each images
     for i, image_file in enumerate(image_files):
+        print(image_file)
         img = cv2.imread(image_file)
-        coors = detector(img, 1)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        coors = detector(img_rgb, 1)
         
         # save images for each images
         for j, coors in enumerate(coors):
@@ -30,7 +32,7 @@ for dir_name in tqdm(dir_list);
             right = coors.right()
             
             # skip images which have the size of below 80 px
-            if right - left < 80 or bottom - top;
+            if right - left < 80 or bottom - top:
                 pass
             else:
                 dst_img = img[top:bottom, left:right]
