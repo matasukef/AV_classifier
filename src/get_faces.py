@@ -13,6 +13,7 @@ dir_list = os.listdir(INPUT_DIR)
 
 # get the list of images for each dir
 for dir_name in tqdm(dir_list):
+    print(dir_name)
     if not os.path.exists(os.path.join(OUTPUT_DIR, dir_name)):
         os.mkdir(os.path.join(OUTPUT_DIR, dir_name))
     image_files = glob.glob(os.path.join(INPUT_DIR, dir_name, "*.jpg"))
@@ -32,12 +33,16 @@ for dir_name in tqdm(dir_list):
             right = coors.right()
             
             # skip images which have the size of below 80 px
-            if right - left < 80 or bottom - top:
+            if right - left < 80 and bottom - top:
                 pass
             else:
-                dst_img = img[top:bottom, left:right]
-                face_img = cv2.resize(dst_img, (96, 96))
-                img_name = dir_name + str(i) + '_' + str(j) + '.jpg'
-                target_dir = os.path.join(OUTPUT_DIR, dir_name,  img_name)
-                cv2.imwrite(target_dir, face_img)
+                try:
+                    dst_img = img[top:bottom, left:right]
+                    #face_img = cv2.resize(dst_img, (96, 96))
+                    img_name = dir_name + str(i) + '_' + str(j) + '.jpg'
+                    target_dir = os.path.join(OUTPUT_DIR, dir_name,  img_name)
+                    #cv2.imwrite(target_dir, face_img)
+                    cv2.imwrite(target_dir, dst_img)
+                except:
+                    print("error")
 

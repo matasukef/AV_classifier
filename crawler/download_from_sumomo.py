@@ -17,9 +17,10 @@ def download(lists, name):
     if not os.path.exists(os.path.join(dir_name, name)):
         os.mkdir(os.path.join(dir_name, name))
 
-    for i, url in tqdm(enumerate(lists)):
-        path = os.path.join(dir_name, name, str(i) + '.jpg')
-        time.sleep(1)
+    for url in tqdm(lists):
+        if url.split('.')[-1] not in ('jpg', 'png', 'jpeg'):
+            continue
+        path = os.path.join(dir_name, name, url.split('/')[-1])
         r = requests.get(url)
 
         if r.status_code == 200:            
@@ -62,6 +63,7 @@ if __name__ == "__main__":
     numbers = csv['no']
     names = csv['name']
     for number, name in tqdm(zip(numbers, names)):
+        time.sleep(5)
         lists = get_urls(number)
         download(lists, name)
     
