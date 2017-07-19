@@ -20,12 +20,11 @@ def download(lists):
     dir_name = os.path.join('..', 'Images', 'eropalace21')
 
     for url in tqdm(lists):
+        time.sleep(5)
+        print(url)
         
+        FLAG = False
         urls = []   
-        FLAG = True
-        
-        if not os.path.exists(os.path.join(dir_name, name)):
-            os.mkdir(os.path.join(dir_name, name))
         
         r = requests.get(url)
         soup = BeautifulSoup(r.content, 'lxml')
@@ -40,18 +39,32 @@ def download(lists):
                 FLAG = True
             elif FLAG == True and tag == after:
                 FALG = False
+                break
             elif FLAG == True and tag != after:
-                   urls.append(tag['href'])
+                tmp = tag.next_element.next_element.next_element
+                
+                if tmp != '\n' and tmp != after.string:
+                   #print(tmp['src'])
+                   urls.append(tmp['src'])
     
-        save_name = urls[0].split('/')[-1][-5] + '.csv'
+        save_name = os.path.join('csv_files', urls[0].split('/')[-1][:-6] + '.csv')
+        sub_dir_name = urls[0].split('/')[-1][:-6]
+        
+
         with open(save_name, 'w') as f:
             writer = csv.writer(f, lineterminator='\n')
             writer.writerow(urls)
 
+        if not os.path.exists(os.path.join(dir_name, sub_dir_name)):
+            os.mkdir(os.path.join(dir_name, sub_dir_name))
+        
         for url in urls:
+           
+            img_save_name = url.split('/')[-1]
+            
             if url.split('.')[-1] not in ('jpg', 'png', 'jpeg'):
                 continue
-            path = os.path.join(dir_name, save_name, url.split('/')[-1])
+            path = os.path.join(dir_name, sub_dir_name, img_save_name)
             r = requests.get(url)
 
             if r.status_code == 200:            
@@ -60,7 +73,7 @@ def download(lists):
                         f.write(chunk)
 
 
-def get_urls():
+def get_urls(url):
     lists = []
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'lxml')
@@ -71,7 +84,7 @@ def get_urls():
     for u in urls:
         lists.append(u['href'])
 
-    with open('name_list.csv', 'w') as f:
+    with open(os.path.join('csv_files', 'name_list.csv'), 'w') as f:
         writer = csv.writer(f, lineterminator='\n')
         writer.writerow(lists)
     
@@ -79,5 +92,8 @@ def get_urls():
 
 if __name__ == "__main__":
 
-    lists = get_urls(os.path.join(BASE_URL, category[0]))
+    #lists = get_urls(os.path.join(BASE_URL, category[0]))
+    #download(lists)
+    lists = get_urls(os.path.join(BASE_URL, category[1]))
     download(lists)
+    lists = get_urls(os.path.join(BASE_URL, category[1]))
