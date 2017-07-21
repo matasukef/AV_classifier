@@ -6,7 +6,7 @@ from tqdm import tqdm
 from settings import * 
 
 # set the number of files you need par directory
-min_num = 30
+min_num = 20
 
 # set the ratio for trainding data 
 ratio = 0.8
