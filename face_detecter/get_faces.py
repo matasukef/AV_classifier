@@ -4,7 +4,7 @@ import glob
 import cv2
 import dlib
 from tqdm import tqdm
-from settings import *
+from setup.settings import *
 
 detector = dlib.get_frontal_face_detector()
 
