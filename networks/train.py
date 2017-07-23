@@ -10,9 +10,10 @@ from keras.layers import Convolution2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-from settings import *
 import numpy as np
 import glob
+from functions.settings import *
+from functions.functions import *
 
 # get the name of each classes
 classes = os.listdir(TRAIN_DIR)
@@ -70,7 +71,6 @@ if __name__ == "__main__":
     top_model.add(Dropout(0.5))
     top_model.add(Dense(nb_class, activation='softmax'))
 
-    #top_model.load_weights(os.path.join(result_dir, 'bottleneck_fc_model.h5'))
 
     model = Model(input=vgg19.input, output=top_model(vgg19.output))
 
@@ -79,7 +79,14 @@ if __name__ == "__main__":
 
     model.compile(loss='categorical_crossentropy',
             optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
-            metrics=['accuracy'])
+            metrics=['accuracy']
+     )
+
+    # save model
+    model_json_str = model.to_json()
+    open(os.path.join(MODEL_DIR, 'model.json'), 'w').write(model_json_str)
+    
+    #top_model.load_weights(os.path.join(result_dir, 'bottleneck_fc_model.h5'))
 
     train_datagen = ImageDataGenerator(
             preprocessing_function=preprocess,
