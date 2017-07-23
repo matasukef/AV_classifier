@@ -13,6 +13,6 @@ TRAIN_DIR = os.path.join(BASE_DIR, 'train')
 VALID_DIR = os.path.join(BASE_DIR, 'valid')
 
 # results
-RESUTL_DIR = os.path.join('..', 'results')
-MODEL_DIR = os.path.join('..', RESULT_DIR, 'models')
-WEIGHTS_DIR = os.path.join('..', RESULT_DIR, 'weights')
+RESULT_DIR = os.path.join('..', 'results')
+MODEL_DIR = os.path.join( RESULT_DIR, 'models')
+WEIGHTS_DIR = os.path.join(RESULT_DIR, 'weights')

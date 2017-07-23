@@ -1,4 +1,4 @@
-import numpya as np
+import numpy as np
 
 def preprocess(x):
     x = x[:, :, ::-1]
@@ -9,7 +9,7 @@ def preprocess(x):
     return x
 
 
-def save_history(history, result_dir)
+def save_history(history, result_dir):
     loss = history.history['loss']
     acc = history.history['acc']
     val_loss = history.history['val_loss']

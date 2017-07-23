@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append('../setup')
+sys.path.append('../functions')
 from keras.applications.vgg19 import VGG19
 from keras.applications.vgg19 import preprocess_input
 from keras.models import Model
@@ -12,13 +13,14 @@ from keras import optimizers
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
 import glob
-from functions.settings import *
-from functions.functions import *
+from settings import *
+from functions import *
 
 # get the name of each classes
 classes = os.listdir(TRAIN_DIR)
 
-batch_size = 256
+#batch_size = 256
+batch_size = 32
 nb_class = len(classes)
 data_augmentation = True
 
@@ -122,7 +124,7 @@ if __name__ == "__main__":
     )
 
     # save weight on the way
-    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights.h5'), verbose=1, save_best_only=True)
+    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights.h5'), verbose=5, save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
     history = model.fit_generator(
@@ -131,7 +133,8 @@ if __name__ == "__main__":
         nb_epoch = nb_epoch,
         validation_data = validation_generator,
         nb_val_samples = nb_val_samples,
-        callbacks = [checkpointer, early_stopping]
+        #callbacks = [checkpointer, early_stopping]
+        callbacks = [checkpointer]
     )
 
     model.save_weights(os.path.join(result_dir, report, 'finetuning.h5'))
