@@ -17,7 +17,7 @@ import glob
 # get the name of each classes
 classes = os.listdir(TRAIN_DIR)
 
-batch_size = 64
+batch_size = 256
 nb_class = len(classes)
 data_augmentation = True
 
@@ -30,7 +30,7 @@ validation_data_dir = VALID_DIR
 
 nb_train_samples = nb_class * 16
 nb_val_samples = nb_class * 4
-nb_epoch = 100
+nb_epoch = 1000
 
 result_dir = os.path.join(HOME_DIR, 'results')
 if not os.path.exists(result_dir):
@@ -83,15 +83,15 @@ if __name__ == "__main__":
 
     train_datagen = ImageDataGenerator(
             preprocessing_function=preprocess,
-            #rescale=1.0/255,
+            rescale=1.0/255,
             shear_range=0.2,
             zoom_range=0.2,
             horizontal_flip=True
     )
 
     test_datagen = ImageDataGenerator(
-            #rescale=1.0/255,
-            preprocessing_function=preprocess
+            preprocessing_function=preprocess,
+            rescale=1.0/255,
     )
 
     train_generator = train_datagen.flow_from_directory(

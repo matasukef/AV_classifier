@@ -3,3 +3,6 @@
 *.png
 .DS_Store
 __pycache__/
+mid/
+report/
+
