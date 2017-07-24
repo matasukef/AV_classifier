@@ -9,3 +9,4 @@ csvfiles/
 *.h5
 *.json
 results/
+results/mid/mid_weights.h5
