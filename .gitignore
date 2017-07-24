@@ -8,3 +8,5 @@ report/
 csvfiles/
 *.h5
 *.json
+results/
+
