@@ -5,7 +5,7 @@ from settings import *
 import functions.functions
 
 fn_model = os.path.join(RESULT_DIR, 'model.json')
-fn_weights = os.path.join(RESUTL_DIR, 'weights.hdf5')
+fn_weights = os.path.join(RESUTL_DIR, 'finetuned_weights.hdf5')
 
 # read model
 json_string = open(fn_model).read()

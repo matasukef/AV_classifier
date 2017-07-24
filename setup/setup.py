@@ -1,21 +1,23 @@
 import os
+import sys
 import random
 import shutil
 import cv2
 from tqdm import tqdm
-from settings import * 
+sys.path.append('../')
+from functions.settings import * 
 
 # set the number of files you need par directory
-min_num = 20
+min_num = 50
 
 # set the ratio for trainding data 
-ratio = 0.8
+ratio = 0.7
 
 # resize param
 resize = True
 
 # image size
-n_cols, n_rows, n_channels = (96, 96, 3)
+n_cols, n_rows, n_channels = (256, 256, 3)
 
 dir_list = os.listdir(OUTPUT_DIR)
 

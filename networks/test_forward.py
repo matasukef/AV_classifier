@@ -24,7 +24,7 @@ classes = os.listdir(TRAIN_DIR)
 nb_class = len(claases)
 
 fn_model = 'model.json'
-fn_weights = 'weights.h5'
+fn_weights = 'finetuned_weights.h5'
 
 json_string = open(os.path.join(MODEL_DIR, fn_model)).read()
 model = model_from_json(json_string)

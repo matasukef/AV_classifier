@@ -25,15 +25,16 @@ nb_class = len(classes)
 data_augmentation = True
 
 # input image dimensions
-img_rows, img_cols, channels = (96, 96, 3)
+#img_rows, img_cols, channels = (96, 96, 3)
+img_rows, img_cols, channels = (256, 256, 3)
 input_shape = (img_rows, img_cols, channels)
 
 train_data_dir = TRAIN_DIR
 validation_data_dir = VALID_DIR
 
-nb_train_samples = nb_class * 16
-nb_val_samples = nb_class * 4
-nb_epoch = 1000
+nb_train_samples = nb_class * 35
+nb_val_samples = nb_class * 15
+nb_epoch = 100
 
 result_dir = os.path.join(HOME_DIR, 'results')
 if not os.path.exists(result_dir):
@@ -86,9 +87,9 @@ if __name__ == "__main__":
 
     # save model
     model_json_str = model.to_json()
-    open(os.path.join(MODEL_DIR, 'model.json'), 'w').write(model_json_str)
+    open(os.path.join(MODEL_DIR, 'model_256.json'), 'w').write(model_json_str)
     
-    #top_model.load_weights(os.path.join(result_dir, 'bottleneck_fc_model.h5'))
+    model.load_weights(os.path.join(RESULT_DIR, 'mid', 'mid_weights_256.h5'))
 
     train_datagen = ImageDataGenerator(
             preprocessing_function=preprocess,
@@ -124,7 +125,7 @@ if __name__ == "__main__":
     )
 
     # save weight on the way
-    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights.h5'), verbose=5, save_best_only=True)
+    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights_256.h5'), verbose=5, save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
     history = model.fit_generator(
@@ -133,10 +134,10 @@ if __name__ == "__main__":
         nb_epoch = nb_epoch,
         validation_data = validation_generator,
         nb_val_samples = nb_val_samples,
-        #callbacks = [checkpointer, early_stopping]
-        callbacks = [checkpointer]
+        callbacks = [checkpointer, early_stopping]
+        #callbacks = [checkpointer]
     )
 
-    model.save_weights(os.path.join(result_dir, report, 'finetuning.h5'))
-    save_history(history, os.path.join(result_dir, 'history_finetuning.txt'))
+    model.save_weights(os.path.join(result_dir, 'weights', 'weights_256.h5'))
+    save_history(history, os.path.join(result_dir, 'report', 'history_finetuning.txt'))
 
