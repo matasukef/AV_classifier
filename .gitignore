@@ -7,3 +7,4 @@ mid/
 report/
 csvfiles/
 *.h5
+*.json
