@@ -1,18 +1,20 @@
+import sys
 import os
-import keras.models import model_from_json
-import keras.preprocessing.image import ImageDataGenerator
-from settings import *
+from keras.models import model_from_json
+from keras.preprocessing.image import ImageDataGenerator
+sys.path.append('../')
+from functions.settings import *
 import functions.functions
 
-fn_model = os.path.join(RESULT_DIR, 'model.json')
-fn_weights = os.path.join(RESUTL_DIR, 'finetuned_weights.hdf5')
+fn_model = os.path.join(MODEL_DIR, 'model_256.json')
+fn_weights = os.path.join(WEIGHTS_DIR, 'mid_weights_256.h5')
 
 # read model
 json_string = open(fn_model).read()
 model = model_from_json(json_string)
 
 # read weights
-model.load_from_json(fn_weights)
+model.load_weights(fn_weights)
 
 #model.summary()
 

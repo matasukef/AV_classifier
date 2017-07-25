@@ -94,7 +94,7 @@ $(function(){
                             }
                             //<tr style="border-bottom:1pt solid #cccccc">
                         }else{
-                            $('<p></p>').text('No faces have detected.').appendTo('#faces');
+                            $('<p></p>').text('No faces are detected.').appendTo('#faces');
                         }
 
                     })
