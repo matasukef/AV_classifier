@@ -19,6 +19,8 @@ from functions import *
 # get the name of each classes
 classes = os.listdir(TRAIN_DIR)
 
+ratio = 0.7
+
 #batch_size = 256
 batch_size = 64
 nb_class = len(classes)
@@ -32,9 +34,9 @@ input_shape = (img_rows, img_cols, channels)
 train_data_dir = TRAIN_DIR
 validation_data_dir = VALID_DIR
 
-nb_train_samples = nb_class * 21
-nb_val_samples = nb_class * 9
-nb_epoch = 300
+nb_train_samples = nb_class * 35
+nb_val_samples = nb_class * 15
+nb_epoch = 500
 
 result_dir = os.path.join(HOME_DIR, 'results')
 if not os.path.exists(result_dir):
@@ -89,7 +91,7 @@ if __name__ == "__main__":
 
     # save model
     model_json_str = model.to_json()
-    open(os.path.join(MODEL_DIR, 'model_256.json'), 'w').write(model_json_str)
+    open(os.path.join(MODEL_DIR, 'model_67.json'), 'w').write(model_json_str)
     
     #model.load_weights(os.path.join(RESULT_DIR, 'mid', 'mid_weights_256_122.hdf5'))
 
@@ -127,7 +129,7 @@ if __name__ == "__main__":
     )
 
     # save weight on the way
-    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights_256_122.h5'), verbose=5, save_best_only=True)
+    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights_256_67.h5'), verbose=5, save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
     history = model.fit_generator(
@@ -140,6 +142,6 @@ if __name__ == "__main__":
         #callbacks = [checkpointer]
     )
 
-    model.save_weights(os.path.join(result_dir, 'weights', 'weights_256_122.hdf5'))
-    save_history(history, os.path.join(result_dir, 'report', 'history_finetuning_122.txt'))
+    model.save_weights(os.path.join(result_dir, 'weights', 'weights_256_67.hdf5'))
+    save_history(history, os.path.join(result_dir, 'report', 'history_finetuning_67.txt'))
 
