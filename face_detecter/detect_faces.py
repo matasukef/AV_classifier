@@ -25,7 +25,6 @@ def detectFaces(pic):
             if left - right < 80 and bottom - top < 80:
                 pass
             else:
-                print('test')
                 cut_img.append(img[top:bottom, left:right])
                 cv2.rectangle(img, (left, bottom), (right, top), color, thickness=3)
                 

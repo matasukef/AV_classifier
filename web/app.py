@@ -1,21 +1,25 @@
 import os
+import sys
 from flask import Flask, render_template, request, jsonify, Response
 from keras.models import model_from_json
 from keras.preprocessing import image
+from keras import optimizers
 import numpy as np
 import base64
 import cv2
-from functions.functions.settings import *
+sys.path.append('../')
+from functions.settings import *
+from face_detecter.detect_faces import *
 import json
 
 
 
 #model properties
-fn_model = "model.json"
-fn_weighs = "weights.hdf5"
+fn_model = "model_256.json"
+fn_weighs = "mid_weights_256.h5"
 
 model_json = open(os.path.join(MODEL_DIR, fn_model)).read()
-img_row, img_col, channels = (96, 96, 3)
+img_row, img_col, channels = (256, 256, 3)
 target_size = (img_row, img_col, channels)
 
 #for cutting images
@@ -36,14 +40,14 @@ def classifier():
     model = model_from_json(model_json)
     model.load_weights(os.path.join(WEIGHTS_DIR, fn_weighs))
     model.compile(loss="categorical_crossentropy",
-                  optimizers=optimizers.SGD(lr=1e-4, momentum=0.9),
+                  optimizer=optimizers.SGD(lr=1e-4, momentum=0.9),
                   metrics=["accuracy"]
     )
 
     file = request.files['file']
     file_name = file.filename
     file.save(tmp)
-    cut_img, img = detectFace(tmp)
+    cut_img, img = detectFaces(tmp)
     
     if cut_img is 0 and img is 0:
         return jsonify(results=[0])

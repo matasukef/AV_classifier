@@ -3,3 +3,11 @@
 *.png
 .DS_Store
 __pycache__/
+mid/
+report/
+csvfiles/
+*.h5
+*.hdf5
+*.json
+results/
+results/mid/mid_weights.h5

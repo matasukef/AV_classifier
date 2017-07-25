@@ -1,6 +1,7 @@
 import os
 import sys
 sys.path.append('../setup')
+sys.path.append('../functions')
 from keras.applications.vgg19 import VGG19
 from keras.applications.vgg19 import preprocess_input
 from keras.models import Model
@@ -12,26 +13,30 @@ from keras import optimizers
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
 import glob
-from functions.settings import *
-from functions.functions import *
+from settings import *
+from functions import *
 
 # get the name of each classes
 classes = os.listdir(TRAIN_DIR)
 
+ratio = 0.7
+
+#batch_size = 256
 batch_size = 64
 nb_class = len(classes)
 data_augmentation = True
 
 # input image dimensions
-img_rows, img_cols, channels = (96, 96, 3)
+#img_rows, img_cols, channels = (96, 96, 3)
+img_rows, img_cols, channels = (256, 256, 3)
 input_shape = (img_rows, img_cols, channels)
 
 train_data_dir = TRAIN_DIR
 validation_data_dir = VALID_DIR
 
-nb_train_samples = nb_class * 16
-nb_val_samples = nb_class * 4
-nb_epoch = 100
+nb_train_samples = nb_class * 35
+nb_val_samples = nb_class * 15
+nb_epoch = 500
 
 result_dir = os.path.join(HOME_DIR, 'results')
 if not os.path.exists(result_dir):
@@ -67,7 +72,9 @@ if __name__ == "__main__":
 
     top_model = Sequential()
     top_model.add(Flatten(input_shape=vgg19.output_shape[1:]))
-    top_model.add(Dense(256, activation='relu'))
+    top_model.add(Dense(4096, activation='relu'))
+    top_model.add(Dropout(0.5))
+    top_model.add(Dense(4096, activation='relu'))
     top_model.add(Dropout(0.5))
     top_model.add(Dense(nb_class, activation='softmax'))
 
@@ -84,21 +91,21 @@ if __name__ == "__main__":
 
     # save model
     model_json_str = model.to_json()
-    open(os.path.join(MODEL_DIR, 'model.json'), 'w').write(model_json_str)
+    open(os.path.join(MODEL_DIR, 'model_67.json'), 'w').write(model_json_str)
     
-    #top_model.load_weights(os.path.join(result_dir, 'bottleneck_fc_model.h5'))
+    #model.load_weights(os.path.join(RESULT_DIR, 'mid', 'mid_weights_256_122.hdf5'))
 
     train_datagen = ImageDataGenerator(
             preprocessing_function=preprocess,
-            #rescale=1.0/255,
+            rescale=1.0/255,
             shear_range=0.2,
             zoom_range=0.2,
             horizontal_flip=True
     )
 
     test_datagen = ImageDataGenerator(
-            #rescale=1.0/255,
-            preprocessing_function=preprocess
+            preprocessing_function=preprocess,
+            rescale=1.0/255,
     )
 
     train_generator = train_datagen.flow_from_directory(
@@ -122,7 +129,7 @@ if __name__ == "__main__":
     )
 
     # save weight on the way
-    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights.h5'), verbose=1, save_best_only=True)
+    checkpointer = ModelCheckpoint(os.path.join(result_dir, 'mid', 'mid_weights_256_67.h5'), verbose=5, save_best_only=True)
     early_stopping = EarlyStopping(monitor='val_loss', patience=10)
 
     history = model.fit_generator(
@@ -132,8 +139,9 @@ if __name__ == "__main__":
         validation_data = validation_generator,
         nb_val_samples = nb_val_samples,
         callbacks = [checkpointer, early_stopping]
+        #callbacks = [checkpointer]
     )
 
-    model.save_weights(os.path.join(result_dir, report, 'finetuning.h5'))
-    save_history(history, os.path.join(result_dir, 'history_finetuning.txt'))
+    model.save_weights(os.path.join(result_dir, 'weights', 'weights_256_67.hdf5'))
+    save_history(history, os.path.join(result_dir, 'report', 'history_finetuning_67.txt'))
 
