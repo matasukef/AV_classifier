@@ -6,6 +6,7 @@ csvfiles/
 *.h5
 *.hdf5
 *.json
+<<<<<<< HEAD
 results/
 
 
@@ -112,3 +113,5 @@ ENV/
 .mypy_cache/
 
 
+=======
+>>>>>>> 559255bd3f97c9e8d9ca46a2d8cfc813eba5bd72
