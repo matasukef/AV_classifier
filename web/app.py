@@ -7,14 +7,24 @@ from keras.preprocessing import image
 import numpy as np
 import base64
 import cv2
+import csv
 sys.path.append('../')
 from functions.settings import *
 from face_detecter.detect_faces import *
 from json import dumps
 
-classes = os.listdir(TRAIN_DIR)
-nb_class = len(classes
-)
+
+# get the class list
+names = []
+classes = os.path.join(RESULT_DIR, 'lists', 'names_67.csv')
+with open(classes, 'r') as f:
+    reader = csv.reader(f)
+    for name in reader:
+        names.append(name[0])
+
+
+nb_class = len(names)
+
 #model properties
 fn_model = "model_67.json"
 fn_weighs = "weights_256_67.hdf5"
@@ -87,7 +97,7 @@ def classifier():
     
         top = 10
         top_indices = pred.argsort()[-top:][::-1]
-        result = [ (classes[i], pred[i]) for i in top_indices ]
+        result = [ (names[i], pred[i]) for i in top_indices ]
         
         for n, p in result:
             name.append(str(n))
