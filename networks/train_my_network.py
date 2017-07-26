@@ -29,8 +29,8 @@ input_shape = (img_rows, img_cols, img_channels)
 train_data_dir = TRAIN_DIR
 validation_data_dir = VALID_DIR
 
-nb_train_samples = nb_classes * 35
-nb_val_samples = nb_classes * 15
+nb_train_samples = nb_classes * 24
+nb_val_samples = nb_classes * 6
 
 nb_epoch = 1000
 
@@ -51,6 +51,7 @@ def conv_bn_relu(x, out_ch, name):
     x = Activation('relu', name='{0}_relu'.format(name))(x)
     return x
 
+"""
 def model(input_shape=(3, 96, 96), nb_classes, weights_path=None):
     
     inputs = Input(shape=input_shape, name='inoput')
@@ -79,7 +80,7 @@ def model(input_shape=(3, 96, 96), nb_classes, weights_path=None):
     x = Dense(nb_classes, activation='softmax', name='predictions')(x)
 
     model = Model(input=inputs, output=x)
-
+"""
 
 if __name__ == '__main__':
 
@@ -145,9 +146,29 @@ if __name__ == '__main__':
     )
 
     tran_generator = train_datagen.flow_from_directory(
-        train_data_di4,
+        train_data_dir,
         target_size = (img_rows, img_cols),
         batch_size = batch_size,
-        class_mode='categorical'
+        class_mode='categorical',
+        classes=classes,
+        shuffle=True
     )
+
+    validation_generator = test_datagen.flow_from_directory(
+        validation_data_dir,
+        target_size = (img_rows, img_cols),
+        class_mode='categorical',
+        classes=classes,
+        batch_size=batch_size,
+        shuffle=True
     )
+
+    history = model.fit_generator(
+        train_generator,
+        samples_per_epoch=nb_train_samples,
+        nb_epoch=nb_epoch,
+        validation_data=validation_generator,
+        nb_val_samples=nb_val_samples)
+
+    model.save_weights(os.path.join(WEIGHTS_DIR, 'my_weights.h5'))
+    save_history(history, os.path.join(RESULT_DIR, 'report', 'history_my_network.txt'))
