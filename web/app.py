@@ -16,16 +16,12 @@ from json import dumps
 
 # get the class list
 names = []
-classes = os.path.join(RESULT_DIR, 'lists', 'names_67.csv')
+classes = os.path.join(RESULT_DIR, 'lists', 'name_67.csv')
 with open(classes, 'r') as f:
     reader = csv.reader(f)
     for name in reader:
         names.append(name[0])
 
-
-nb_class = len(names)
-
-#model properties
 fn_model = "model_67.json"
 fn_weighs = "weights_256_67.hdf5"
 
