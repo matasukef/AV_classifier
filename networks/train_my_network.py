@@ -23,14 +23,14 @@ nb_classes = len(classes)
 data_augumentation = True
 
 # input_image specifications
-img_rows, img_cols, img_channels = (96, 96, 3)
+img_rows, img_cols, img_channels = (256, 256, 3)
 input_shape = (img_rows, img_cols, img_channels)
 
 train_data_dir = TRAIN_DIR
 validation_data_dir = VALID_DIR
 
-nb_train_samples = nb_classes * 16
-nb_val_samples = nb_classes * 4
+nb_train_samples = nb_classes * 35
+nb_val_samples = nb_classes * 15
 
 nb_epoch = 1000
 
@@ -79,3 +79,75 @@ def model(input_shape=(3, 96, 96), nb_classes, weights_path=None):
     x = Dense(nb_classes, activation='softmax', name='predictions')(x)
 
     model = Model(input=inputs, output=x)
+
+
+if __name__ == '__main__':
+
+    model = Sequential()
+
+    model.add(Convolution2D(64, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(Convolution2D(64, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+
+    model.add(Convolution2D(128, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(Convolution2D(128, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    
+    model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
+    model.add(BatchNormalization())
+    model.add(activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    
+    model.add(Flatten())
+    model.add(Dense(4096))
+    model.add(activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(4096)
+    model.add(activation('relu'))
+    model.add(Dropout(0.5))
+
+    model.add(nb_classes)
+    model.add(activation('softmax'))
+
+    model.compile(
+        loss='categorical_crossentropy',
+        optimizer='adam',
+        metrics=['accuracy'])
+
+    
+    model_json_str = model.to_json()
+    open(os.path.join(MODE_DIR, 'my_model.json'), 'w').write(model_json_str)
+
+    #model.loadweights(os.path.join(WEIGHTS_DIR, 'my_model_weights.hdf5'))
+
+    train_datagen = ImageDataGenerator(
+        rescale=1.0 / 255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+    test_datagen = ImageDataGenerator(
+        rescale = 1.0 / 255
+    )
+
+    tran_generator = train_datagen.flow_from_directory(
+        train_data_di4,
+        target_size = (img_rows, img_cols),
+        batch_size = batch_size,
+        class_mode='categorical'
+    )
+    )

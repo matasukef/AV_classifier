@@ -4,12 +4,12 @@ import sys
 import numpy as np
 import cv2
 from tqdm import tqdm
-sys.path.append('../setup')
-from settings import *
+sys.path.append('../')
+from functions.settings import *
 
 num_img = 0
 
-n_rows, n_cols, n_channels = (96, 96, 3)
+n_rows, n_cols, n_channels = (256, 256, 3)
 
 if not os.path.exists(TRAIN_DIR):
     print('{0} is not found.'.format(TRAIN_DIR))

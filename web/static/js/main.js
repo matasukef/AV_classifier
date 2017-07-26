@@ -72,7 +72,7 @@ $(function(){
                         if(data.results[0] != 0){
 
                             var dtype =  "data:image/jpg;base64,";
-                            var src1 = dtype + data.results[0];
+                            var src1 = data.results[0];
                             drawImage('main', src1);
 
                             var head = '<tr class="active"><th class="col-md-1">detected faces</th><th class="col-md-4">results</th></tr>';
@@ -80,14 +80,15 @@ $(function(){
                             $('#faces').append(head);
                             
                             for(i = 0; i < data.results[1].length; i++){
-                                var src = dtype + data.results[1][i];
-                                var pre1 = data.results[2][i];
-                                var pre2 = data.results[3][i];
-                                var prob = Math.max(pre1, pre2);
-                                console.log(prob);
-                                var group = (pre1 < pre2) ? "アイドル" : "AV女優";
-                                prob = (prob*100).toFixed(2);
-                                var element = '<tr><td><canvas id="input' + i.toString()+ '" style="border: 1px solid; margin: 12px 0 0 0" width="100" height="100"></canvas></td><td><table class="table"><tr class="active"><th>face ' + (i+1).toString() + '</th><th></th><tr><td>result:</td><td>' + group + '<td></tr><tr><td>probability:</td><td>' + prob + '%</td></table></td></tr>';
+                                var src = data.results[1][i];
+                                var names = data.results[2];
+                                var prob = data.results[3];
+                                var element = '<tr><td><canvas id="input' + i.toString()+ '" style="border: 1px solid; margin: 12px 0 0 0" width="150" height="150"></canvas></td><td><table class="table"><tr class="active"><th>Candidates</th><th>probability</th>';
+                                
+                                for(j = 0; j < data.results[2].length; j++){
+                                    element += '<tr><td>' + data.results[2][j] + '</td><td>' + (data.results[3][j] * 100).toFixed(2)+ '%<td></tr>';
+                                }
+
                                 $('#faces').append(element);
 
                                 drawImage('input'+i.toString(), src);
@@ -148,7 +149,7 @@ drawImage = function(tag, img){
             ctx.drawImage(image, 0, center, resized_width, resized_height);
         }
     }
-    image.src = img;
+    image.src = "data:image/jpg;base64," + img;
 }
 
 
