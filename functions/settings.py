@@ -5,7 +5,8 @@ IMAGE_DIR = os.path.join('..', 'Images')
 
 INPUT_DIR = os.path.join('..', 'Images', 'add')
 OUTPUT_DIR = os.path.join('..', 'Images', 'faces')
-HOME_DIR = ".."
+
+VISUAL_DIR = os.path.join(IMAGE_DIR, 'visual')
 
 # creating datasets
 BASE_DIR = os.path.join('..', 'Images', 'data')

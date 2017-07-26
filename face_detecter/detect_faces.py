@@ -48,6 +48,8 @@ if __name__ == '__main__':
 
     if len(cut_img):
         #cv2.imshow('cut_image', cut_img[0])
+        cv2.imwrite('cut_img.jpg', cut_img[0])
+        cv2.imwrite('img.jpg', img)
         cv2.imshow('image', img)
         cv2.waitKey(0)
     else:
