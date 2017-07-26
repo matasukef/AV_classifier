@@ -18,7 +18,7 @@ from settings import *
 
 classes = os.listdir(TRAIN_DIR)
 
-batch_size = 64
+batch_size = 32
 nb_classes = len(classes)
 data_augumentation = True
 
