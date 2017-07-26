@@ -6,14 +6,14 @@ import glob
 from keras.models import Model
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, Input
-from keras.layerrs import Convolution2D, MaxPooling2D
+from keras.layers import Convolution2D, MaxPooling2D, BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 sys.path.append('../functions/')
-from functions.functions import *
-from functions.settings import *
+from functions import *
+from settings import *
 
 
 classes = os.listdir(TRAIN_DIR)
@@ -88,41 +88,41 @@ if __name__ == '__main__':
 
     model.add(Convolution2D(64, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(Convolution2D(64, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
 
     model.add(Convolution2D(128, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(Convolution2D(128, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
     
     model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(Convolution2D(256, 3, 3, border_mode='same', input_shape=input_shape))
     model.add(BatchNormalization())
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
     
     model.add(Flatten())
     model.add(Dense(4096))
-    model.add(activation('relu'))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(4096)
-    model.add(activation('relu'))
+    model.add(Dense(4096))
+    model.add(Activation('relu'))
     model.add(Dropout(0.5))
 
-    model.add(nb_classes)
-    model.add(activation('softmax'))
+    model.add(Dense(nb_classes))
+    model.add(Activation('softmax'))
 
     model.compile(
         loss='categorical_crossentropy',
@@ -131,7 +131,7 @@ if __name__ == '__main__':
 
     
     model_json_str = model.to_json()
-    open(os.path.join(MODE_DIR, 'my_model.json'), 'w').write(model_json_str)
+    open(os.path.join(MODEL_DIR, 'my_model.json'), 'w').write(model_json_str)
 
     #model.loadweights(os.path.join(WEIGHTS_DIR, 'my_model_weights.hdf5'))
 
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         rescale = 1.0 / 255
     )
 
-    tran_generator = train_datagen.flow_from_directory(
+    train_generator = train_datagen.flow_from_directory(
         train_data_dir,
         target_size = (img_rows, img_cols),
         batch_size = batch_size,
