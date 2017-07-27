@@ -23,7 +23,8 @@ classification network for av actresses.
 
 ### web app
 
-## Image
+## Images
++ results by web app.
 ![img1](tmp/img1.png)
 ![img2](tmp/img2.png)
 ![img3](tmp/img3.png)
