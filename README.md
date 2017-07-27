@@ -10,18 +10,25 @@ classification network for av actresses.
    - dlib >= 19.4
    - tqdm >= 4.14
 
+## Results
+- Final Result
+    + train loss: 0.4556
+    + train accuracy: 94.4%
+    + validation loss: 1.224
+    + validation accuracy: 72.2%
+
 ## What to do
+- [ ] Re-construct datasets.
 - [ ] Re-implements it by Chainer
 - [ ] implements DCGAN
-- [ ] plots
 
 ## Usage
 
-### crawler
+### Crawler
 
-### face detector
+### Face detector
 
-### web app
+### Web app
 
 ## Images
 + results by web app.
