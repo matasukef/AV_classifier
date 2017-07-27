@@ -11,9 +11,9 @@ classification network for av actresses.
    - tqdm >= 4.14
 
 ## What to do
--[ ] Re-implements it by Chainer
--[ ] implements DCGAN
--[ ] plots
+- [ ] Re-implements it by Chainer
+- [ ] implements DCGAN
+- [ ] plots
 
 ## Usage
 
