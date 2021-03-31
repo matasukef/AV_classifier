@@ -8,7 +8,7 @@ Flask==0.12.2
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
-lxml==4.0.0
+lxml==4.6.3
 MarkupSafe==1.0
 matplotlib==2.1.0
 mock==2.0.0
